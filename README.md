@@ -1,6 +1,20 @@
 # Quotewall
 
-TODO: Write a gem description
+Generate a beautiful wallpaper from a specified quote
+
+## Dependencies
+
+Install dependencies using homebrew
+
+### Imagemagick
+
+Brew imagemagick
+
+    brew install imagemagick
+
+### Ghostscript
+
+    brew install ghostscript
 
 ## Installation
 
