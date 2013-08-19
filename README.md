@@ -1,6 +1,8 @@
 # Quotewall
 
-Generate a beautiful wallpaper from a specified quote
+Generate a beautiful wallpaper from a specified quote. Just because it's Why day :)
+
+![Quotewall](http://mauromorales.com/images/quotewall.jpg)
 
 ## Dependencies
 
@@ -32,7 +34,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+quotewall "when you don't create things, you become defined by your tastes rather than ability. your tastes only narrow & exclude people. so create." "Why The Lucky Stiff"
+
+## Limitations
+
+It will only work on OS X. It has only been tested in version 10.8.4 on a MacBook Air 11" screen
 
 ## Contributing
 
