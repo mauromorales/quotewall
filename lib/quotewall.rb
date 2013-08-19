@@ -39,9 +39,8 @@ module Quotewall
   def self.run(args)
     img = Magick::Image.new(display[:width],display[:height]) { self.background_color = "#0d1030" }
     text = Magick::Draw.new
-    args = "#{args} - Anonymous" unless args.include?("-")
-    lines, who = args.split("-")
-    lines = rearange(lines)
+    who = args.size == 2 ? args[1] : "Anonymous"
+    lines = rearange(args[0])
     lines.each_with_index do |line, idx|
       y = ( (idx + 1) * 76) - ((lines.size + 1) * 35) 
       text.annotate(img, 0, 0, 0, y, line.strip) {
@@ -54,7 +53,7 @@ module Quotewall
           }
     end
 
-    text.annotate(img, 0, 0, 300, 100, "- #{who.strip!}") {
+    text.annotate(img, 0, 0, 300, 100, "- #{who}") {
         self.font_family = 'Geneva'
         self.gravity = Magick::SouthEastGravity
         self.pointsize = 64 
@@ -66,44 +65,20 @@ module Quotewall
     pictures_path = File.expand_path("~/Pictures")
     img.write(File.join(pictures_path, "quotewall.jpg"))
     wall_path = File.join(pictures_path, "quotewall.jpg")
+    set_default_background(wall_path)
+    refresh_background
 
+  end
+
+  def self.set_default_background(wall_path)
     `defaults write com.apple.desktop Background '{default = {ImageFilePath = "#{wall_path}"; }; }'`
+  end
+
+  def self.read_default_background
+    `defaults read com.apple.desktop Background`
+  end
+
+  def self.refresh_background
     `killall Dock`
-
   end
-
-=begin
-  img = Magick::Image::read("darkblue.jpg")[0]
-  text = Magick::Draw.new
-
-  lines = ["The way to get started is to quit", "talking and begin doing."]
-  lines.each_with_index do |line, idx|
-    x = (idx * 76) - ((lines.size + 1) * 35) 
-    text.annotate(img, 0, 0, 0, x, line) {
-        self.font_family = 'Geneva'
-        self.gravity = Magick::CenterGravity
-        self.pointsize = 64 
-        self.stroke = 'transparent'
-        self.fill = '#79c7e3'
-        self.font_weight = Magick::BoldWeight
-        }
-  end
-
-  who = "Walt Disney"
-
-  text.annotate(img, 0, 0, 300, 100, "- #{who}") {
-      self.font_family = 'Geneva'
-      self.gravity = Magick::SouthEastGravity
-      self.pointsize = 64 
-      self.stroke = 'transparent'
-      self.fill = '#f70352'
-      self.font_weight = Magick::NormalWeight
-      }
-
-  img.write("wallpaper.jpg")
-
-  wall = File.expand_path("wallpaper.jpg")
-  `defaults write com.apple.desktop Background '{default = {ImageFilePath = "#{wall}"; }; }'`
-  `killall Dock`
-=end
 end

@@ -7,7 +7,9 @@ require 'quotewall'
 options = {}
 option_parser = OptionParser.new do |opts|
   executable_name = File.basename($PROGRAM_NAME)
-  opts.banner = "Usage: #{executable_name} [options] QUOTE
+  opts.banner = "Usage: #{executable_name} [options] QUOTE AUTHOR
+
+    Example: #{executable_name} \"The way to get started is to quit talking and begin doing.\" \"Walt Disney\"
   "
 
   opts.on("-h","--help", 'Print this message') do
@@ -18,12 +20,14 @@ end
 
 begin
   option_parser.parse!
-  if options[:help]
+  if options.empty? and ARGV.empty?
       puts option_parser.help
+  elsif options[:help]
+      puts option_parser.help
+  elsif !ARGV.empty?
+    Quotewall.run(ARGV)
   end
 rescue OptionParser::InvalidArgument => ex
   STDERR.puts ex.message
   STDERR.puts option_parser
 end
-
-Quotewall.run(ARGV[0])
